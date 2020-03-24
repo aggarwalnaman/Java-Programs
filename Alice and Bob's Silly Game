@@ -6,9 +6,6 @@ import java.util.regex.*;
 
 public class Solution {
 
-    /*
-     * Complete the sillyGame function below.
-     */
     static String sillyGame(int n) {
         /*
          * Write your code here.
