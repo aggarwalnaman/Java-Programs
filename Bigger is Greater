@@ -1,0 +1,80 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    static String sortArray(String w,int i1)
+    {
+        char arr[] = w.toCharArray();
+        if(i1==1)
+        {
+            Arrays.sort(arr);
+        }
+        else
+        {
+            int n = arr.length; 
+        for (int i = 0; i < n-1; i++) 
+            for (int j = 0; j < n-i-1; j++) 
+                if (arr[j] < arr[j+1]) 
+                { 
+                    char temp = arr[j]; 
+                    arr[j] = arr[j+1]; 
+                    arr[j+1] = temp; 
+                } 
+        }
+        
+        String s=new String(arr);
+        return s;
+    }
+
+    // Complete the biggerIsGreater function below.
+    static String biggerIsGreater(String w) {
+        int l=w.length();
+        String s="",t="";
+        for(int i=l-2;i>=0;i--)
+        {
+            for(int j=l-1;j>=(i+1);j--)
+            {
+                if(w.charAt(j)>w.charAt(i))
+                {
+                    // System.out.println(w+""+i+""+j);
+                    t=w.substring(j+1,l)+w.substring(i,j);
+                    // t=sortArray(t);
+                    s=w.substring(0,i)+w.charAt(j)+sortArray(t,1);
+                    return s;
+                }
+                
+            }
+            w=w.substring(0,i)+sortArray(w.substring(i,l),2);
+            // System.out.println(w+""+i);
+        }
+        return "no answer";
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int T = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        for (int TItr = 0; TItr < T; TItr++) {
+            String w = scanner.nextLine();
+
+            String result = biggerIsGreater(w);
+
+            bufferedWriter.write(result);
+            bufferedWriter.newLine();
+        }
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
