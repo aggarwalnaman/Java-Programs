@@ -1,0 +1,164 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+class ObstacleLocation {
+    private final int pos_y;
+    private final int pos_x;
+
+    public ObstacleLocation(int pos_y, int pos_x) {
+        this.pos_y = pos_y;
+        this.pos_x = pos_x;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ObstacleLocation that = (ObstacleLocation) o;
+        return pos_y == that.pos_y &&
+                pos_x == that.pos_x;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pos_y, pos_x);
+    }
+}
+
+public class Solution {
+
+    private static boolean isObstacle(int queen_pos_y, int queen_pos_x, Set<ObstacleLocation> obstacleLocations) {
+        final ObstacleLocation obstacleLocation = new ObstacleLocation(queen_pos_y, queen_pos_x);
+        return obstacleLocations.contains(obstacleLocation);
+    }
+
+    // Complete the queensAttack function below.
+    static int queensAttack(int n, int k, int r_q, int c_q, int[][] obstacles) {
+
+        final Set<ObstacleLocation> obstacleLocations = new HashSet<ObstacleLocation>();
+        for (int i = 0; i < k; i++) {
+            final ObstacleLocation obstacleLocation = new ObstacleLocation(obstacles[i][0], obstacles[i][1]);
+            obstacleLocations.add(obstacleLocation);
+        }
+
+        int attack=0,i,j;
+        i=r_q;j=c_q;
+        while(i>1)
+        {
+            i--;
+            if(isObstacle(i,j,obstacleLocations))
+                break;
+            // System.out.println(i+" , "+j);
+            attack++;
+        }
+        i=r_q;j=c_q;
+        while(j>1)
+        {
+            j--;
+            if(isObstacle(i,j,obstacleLocations))
+                break;
+            // System.out.println(i+" , "+j);
+            attack++;
+        }
+        i=r_q;j=c_q;
+        while(i<n)
+        {
+            i++;
+            if(isObstacle(i,j,obstacleLocations))
+                break;
+            // System.out.println(i+" , "+j);
+            attack++;
+        }
+        i=r_q;j=c_q;
+        while(j<n)
+        {
+            j++;
+            if(isObstacle(i,j,obstacleLocations))
+                break;
+            // System.out.println(i+" , "+j);
+            attack++;
+        }
+        i=r_q;j=c_q;
+        while(i>1 && j>1)
+        {
+            i--;j--;
+            if(isObstacle(i,j,obstacleLocations))
+                break;
+            // System.out.println(i+" , "+j);
+            attack++;
+        }
+        i=r_q;j=c_q;
+        while(i<n && j<n)
+        {
+            i++;j++;
+            if(isObstacle(i,j,obstacleLocations))
+                break;
+            // System.out.println(i+" , "+j);
+            attack++;
+        }
+        i=r_q;j=c_q;
+        while(i>1 && j<n)
+        {
+            i--;j++;
+            if(isObstacle(i,j,obstacleLocations))
+                break;
+            // System.out.println(i+" , "+j);
+            attack++;
+        }
+        i=r_q;j=c_q;
+        while(i<n && j>1)
+        {
+            i++;j--;
+            if(isObstacle(i,j,obstacleLocations))
+                break;
+            // System.out.println(i+" , "+j);
+            attack++;
+        }
+        return attack;
+
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] nk = scanner.nextLine().split(" ");
+
+        int n = Integer.parseInt(nk[0]);
+
+        int k = Integer.parseInt(nk[1]);
+
+        String[] r_qC_q = scanner.nextLine().split(" ");
+
+        int r_q = Integer.parseInt(r_qC_q[0]);
+
+        int c_q = Integer.parseInt(r_qC_q[1]);
+
+        int[][] obstacles = new int[k][2];
+
+        for (int i = 0; i < k; i++) {
+            String[] obstaclesRowItems = scanner.nextLine().split(" ");
+            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+            for (int j = 0; j < 2; j++) {
+                int obstaclesItem = Integer.parseInt(obstaclesRowItems[j]);
+                obstacles[i][j] = obstaclesItem;
+            }
+        }
+
+        int result = queensAttack(n, k, r_q, c_q, obstacles);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
